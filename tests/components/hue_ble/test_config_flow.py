@@ -23,11 +23,12 @@ from homeassistant.helpers import device_registry as dr
 from . import (
     HUE_BLE_SERVICE_INFO,
     NOT_HUE_BLE_DISCOVERY_INFO,
+    TEST_BLE_DEVICE,
     TEST_DEVICE_MAC,
     TEST_DEVICE_NAME,
 )
 
-AUTH_ERROR = ConnectionError()
+AUTH_ERROR = ConnectionError(TEST_BLE_DEVICE, None)
 AUTH_ERROR.__cause__ = PairingError()
 
 
@@ -84,6 +85,11 @@ async def test_user_form(
         patch(
             "homeassistant.components.hue_ble.config_flow.HueBleLight.poll_state",
             side_effect=[True],
+        ),
+        patch(
+            "homeassistant.components.hue_ble.config_flow.HueBleLight.supports_on_off",
+            new_callable=PropertyMock,
+            return_value=True,
         ),
     ):
         result = await hass.config_entries.flow.async_configure(
@@ -156,7 +162,7 @@ async def test_user_form_no_device(
         (
             generate_ble_device(TEST_DEVICE_NAME, TEST_DEVICE_MAC),
             1,
-            ConnectionError,
+            ConnectionError(TEST_BLE_DEVICE, None),
             True,
             None,
             Error.CANNOT_CONNECT,
@@ -280,6 +286,11 @@ async def test_user_form_exception(
         patch(
             "homeassistant.components.hue_ble.config_flow.HueBleLight.poll_state",
             side_effect=[True],
+        ),
+        patch(
+            "homeassistant.components.hue_ble.config_flow.HueBleLight.supports_on_off",
+            new_callable=PropertyMock,
+            return_value=True,
         ),
     ):
         result = await hass.config_entries.flow.async_configure(

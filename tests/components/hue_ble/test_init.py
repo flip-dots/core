@@ -13,7 +13,7 @@ from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
 from homeassistant.setup import async_setup_component
 
-from . import TEST_DEVICE_MAC, TEST_DEVICE_NAME
+from . import TEST_BLE_DEVICE, TEST_DEVICE_MAC, TEST_DEVICE_NAME
 
 
 @pytest.mark.parametrize(
@@ -36,7 +36,7 @@ from . import TEST_DEVICE_MAC, TEST_DEVICE_NAME
             generate_ble_device(TEST_DEVICE_MAC, TEST_DEVICE_NAME),
             None,
             False,
-            ConnectionError,
+            ConnectionError(TEST_BLE_DEVICE, None),
             "Device found but unable to connect.",
         ),
         (

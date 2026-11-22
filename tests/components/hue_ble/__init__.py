@@ -8,6 +8,7 @@ from pytest_homeassistant.components.bluetooth import (
 
 TEST_DEVICE_NAME = "Hue Light"
 TEST_DEVICE_MAC = "AA:BB:CC:DD:EE:FF"
+TEST_BLE_DEVICE = generate_ble_device(address=TEST_DEVICE_MAC, name=TEST_DEVICE_NAME)
 
 HUE_BLE_SERVICE_INFO = BluetoothServiceInfoBleak(
     name=TEST_DEVICE_NAME,
@@ -26,7 +27,7 @@ HUE_BLE_SERVICE_INFO = BluetoothServiceInfoBleak(
     rssi=-60,
     source="local",
     advertisement=generate_advertisement_data(
-        local_name=TEST_DEVICE_NAME,
+        local_name=TEST_BLE_DEVICE,
         manufacturer_data={89: b"\xfd`0U\x92W"},
         service_data={"0000fe0f-0000-1000-8000-00805f9b34fb": b"\x02\x10\x0e\xbe\x00"},
         service_uuids=[
